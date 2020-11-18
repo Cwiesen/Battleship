@@ -1,0 +1,234 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Battleship!</title>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+    <meta name="Chad Wiesen" content="Battleship Game">
+
+    <style>
+            .battleship-board { border-spacing: 0; border-collapse: collapse; }
+            .battleship-board th { padding: .5em; }
+            .battleship-board td { border: 1px solid; width: 2em; height: 2em; }
+            .battleship-board .empty { width: 100%; height: 100%; background: #eee}
+            .battleship-board .ship { width: 100%; height: 100%; background: #aaa}
+
+    </style>
+</head>
+
+<body>
+<h1>Battleship!</h1>
+<p id="gameStart">
+<input type="button" onclick="startGame();" value = "Start a New Game!" />
+<p>or Search for a Game:</p>
+<form action="/gamestate/" method="get">
+    <label for="searchGameId">Game Id:</label>
+    <input type="text" id="searchGameId" name="gameId" ><br>
+    <input type="submit" value="Submit" >
+</form>
+
+</p>
+
+    <table class="battleship-board">
+        <tbody>
+        <tr>
+            <div id="playerId">Player: none</div>
+        </tr>
+        <tr>
+            <th>10</th>
+            <td> <button id ="09" class="empty">A10</button></td>
+            <td> <button id ="19" class="empty">B10</button></td>
+            <td> <button id ="29" class="empty">C10</button></td>
+            <td> <button id ="39" class="empty">D10</button></td>
+            <td> <button id ="49" class="empty">E10</button></td>
+            <td> <button id ="59" class="empty">F10</button></td>
+            <td> <button id ="69" class="empty">G10</button></td>
+            <td> <button id ="79" class="empty">H10</button></td>
+            <td> <button id ="89" class="empty">I10</button></td>
+            <td> <button id ="99" class="empty">J10</button></td>
+        </tr>
+        <tr>
+            <th>9</th>
+            <td> <button id ="08" class="empty">A9</button></td>
+            <td> <button id ="18" class="empty">B9</button></td>
+            <td> <button id ="28" class="empty">C9</button></td>
+            <td> <button id ="38" class="empty">D9</button></td>
+            <td> <button id ="48" class="empty">E9</button></td>
+            <td> <button id ="58" class="empty">F9</button></td>
+            <td> <button id ="68" class="empty">G9</button></td>
+            <td> <button id ="78" class="empty">H9</button></td>
+            <td> <button id ="88" class="empty">I9</button></td>
+            <td> <button id ="98" class="empty">J9</button></td>
+        </tr>
+        <tr>
+            <th>8</th>
+            <td> <button id ="07" class="empty">A8</button></td>
+            <td> <button id ="17" class="empty">B8</button></td>
+            <td> <button id ="27" class="empty">C8</button></td>
+            <td> <button id ="37" class="empty">D8</button></td>
+            <td> <button id ="47" class="empty">E8</button></td>
+            <td> <button id ="57" class="empty">F8</button></td>
+            <td> <button id ="67" class="empty">G8</button></td>
+            <td> <button id ="77" class="empty">H8</button></td>
+            <td> <button id ="87" class="empty">I8</button></td>
+            <td> <button id ="97" class="empty">J8</button></td>
+        </tr>
+        <tr>
+            <th>7</th>
+            <td> <button id ="06" class="empty">A7</button></td>
+            <td> <button id ="16" class="empty">B7</button></td>
+            <td> <button id ="26" class="empty">C7</button></td>
+            <td> <button id ="36" class="empty">D7</button></td>
+            <td> <button id ="46" class="empty">E7</button></td>
+            <td> <button id ="56" class="empty">F7</button></td>
+            <td> <button id ="66" class="empty">G7</button></td>
+            <td> <button id ="76" class="empty">H7</button></td>
+            <td> <button id ="86" class="empty">I7</button></td>
+            <td> <button id ="96" class="empty">J7</button></td>
+        </tr>
+        <tr>
+            <th>6</th>
+            <td> <button id ="05" class="empty">A6</button></td>
+            <td> <button id ="15" class="empty">B6</button></td>
+            <td> <button id ="25" class="empty">C6</button></td>
+            <td> <button id ="35" class="empty">D6</button></td>
+            <td> <button id ="45" class="empty">E6</button></td>
+            <td> <button id ="55" class="empty">F6</button></td>
+            <td> <button id ="65" class="empty">G6</button></td>
+            <td> <button id ="75" class="empty">H6</button></td>
+            <td> <button id ="85" class="empty">I6</button></td>
+            <td> <button id ="95" class="empty">J6</button></td>
+        </tr>
+        <tr>
+            <th>5</th>
+            <td> <button id ="04" class="empty">A5</button></td>
+            <td> <button id ="14" class="empty">B5</button></td>
+            <td> <button id ="24" class="empty">C5</button></td>
+            <td> <button id ="34" class="empty">D5</button></td>
+            <td> <button id ="44" class="empty">E5</button></td>
+            <td> <button id ="54" class="empty">F5</button></td>
+            <td> <button id ="64" class="empty">G5</button></td>
+            <td> <button id ="74" class="empty">H5</button></td>
+            <td> <button id ="84" class="empty">I5</button></td>
+            <td> <button id ="94" class="empty">J5</button></td>
+        </tr>
+        <tr>
+            <th>4</th>
+            <td> <button id ="03" class="empty">A4</button></td>
+            <td> <button id ="13" class="empty">B4</button></td>
+            <td> <button id ="23" class="empty">C4</button></td>
+            <td> <button id ="33" class="empty">D4</button></td>
+            <td> <button id ="43" class="empty">E4</button></td>
+            <td> <button id ="53" class="empty">F4</button></td>
+            <td> <button id ="63" class="empty">G4</button></td>
+            <td> <button id ="73" class="empty">H4</button></td>
+            <td> <button id ="83" class="empty">I4</button></td>
+            <td> <button id ="93" class="empty">J4</button></td>
+        </tr>
+        <tr>
+            <th>3</th>
+            <td> <button id ="02" class="empty">A3</button></td>
+            <td> <button id ="12" class="empty">B3</button></td>
+            <td> <button id ="22" class="empty">C3</button></td>
+            <td> <button id ="32" class="empty">D3</button></td>
+            <td> <button id ="42" class="empty">E3</button></td>
+            <td> <button id ="52" class="empty">F3</button></td>
+            <td> <button id ="62" class="empty">G3</button></td>
+            <td> <button id ="72" class="empty">H3</button></td>
+            <td> <button id ="82" class="empty">I3</button></td>
+            <td> <button id ="92" class="empty">J3</button></td>
+        </tr>
+        <tr>
+            <th>2</th>
+            <td> <button id ="01" class="empty">A2</button></td>
+            <td> <button id ="11" class="empty">B2</button></td>
+            <td> <button id ="21" class="empty">C2</button></td>
+            <td> <button id ="31" class="empty">D2</button></td>
+            <td> <button id ="41" class="empty">E2</button></td>
+            <td> <button id ="51" class="empty">F2</button></td>
+            <td> <button id ="61" class="empty">G2</button></td>
+            <td> <button id ="71" class="empty">H2</button></td>
+            <td> <button id ="81" class="empty">I2</button></td>
+            <td> <button id ="91" class="empty">J2</button></td>
+        </tr>
+        <tr>
+            <th>1</th>
+            <td> <button id ="00" class="empty">A1</button></td>
+            <td> <button id ="10" class="empty">B1</button></td>
+            <td> <button id ="20" class="empty">C1</button></td>
+            <td> <button id ="30" class="empty">D1</button></td>
+            <td> <button id ="40" class="empty">E1</button></td>
+            <td> <button id ="50" class="empty">F1</button></td>
+            <td> <button id ="60" class="empty">G1</button></td>
+            <td> <button id ="70" class="empty">H1</button></td>
+            <td> <button id ="80" class="empty">I1</button></td>
+            <td> <button id ="90" class="empty">J1</button></td>
+        </tr>
+        <tr>
+            <th></th>
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+            <th>D</th>
+            <th>E</th>
+            <th>F</th>
+            <th>G</th>
+            <th>H</th>
+            <th>I</th>
+            <th>J</th>
+        </tr>
+        </tbody>
+    </table>
+    <div id="currentAction"></div>
+
+<div id="attack">
+    <form>
+        <label for="shot">Square to Shoot:</label>
+        <input type="text" id="shot" name="shot" size="3" maxLength="3">
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
+<!--<div id="nextMove" >-->
+<!--    <form action="/api/guessletter" method="put">-->
+<!--        <input type="hidden" id="dup" />-->
+<!--        <select id="chosenLetter" >-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="B">B</option>-->
+<!--            <option value="C">C</option>-->
+<!--            <option value="D">D</option>-->
+<!--            <option value="E" selected >E</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--            <option value="A">A</option>-->
+<!--        </select>-->
+
+<!--        <input type ="submit" onclick="submitGuess()" value="Click me!">-->
+<!--    </form>-->
+
+<!--</div>-->
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="scripts.js"></script>
+</body>
+</html>
