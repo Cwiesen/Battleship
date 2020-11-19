@@ -209,10 +209,12 @@ public class PostgresBattleshipDao implements BattleshipDao {
                 throw new InvalidBoardException("Board with id " + boardId + "does not exist. " + ex);
             }
         }
+        //Return the updated board;
+        return getPlayerBoard(boardId);
     }
 
     @Override
-    public void addHit(Integer boardId, Point hitToAdd) throws NullInputException, InvalidBoardException, InvalidHitException {
+    public BattleshipBoard addHit(Integer boardId, Point hitToAdd) throws NullInputException, InvalidBoardException, InvalidHitException {
         //Add a Hit to the game
         if(boardId == null || hitToAdd == null) {
             throw new NullInputException("Attempted to add a hit with null values.");
@@ -229,6 +231,34 @@ public class PostgresBattleshipDao implements BattleshipDao {
                     "VALUES (" + boardId + ", " + hitToAdd.x + ", " + hitToAdd.y + ");");
         } catch(DataAccessException ex) {
             throw new InvalidBoardException("Board with id " + boardId + "does not exist. " + ex);
+        }
+        return getPlayerBoard(boardId);
+    }
+
+    @Override
+    public void updatePlayerTurn(Integer gameId) throws NullGameException, InvalidIdException, InvalidPlayerTurnException, InvalidPlayerException {
+        //Get the current game to check the turn
+        BattleshipGame retrievedGame = getGameById(gameId);
+
+        Integer newTurn;
+        switch(retrievedGame.getPlayerTurn()) {
+            case 0:
+            case 2:
+                newTurn = 1;
+                break;
+            case 1:
+                newTurn = 2;
+                break;
+            default:
+                throw new InvalidPlayerTurnException("Player turn is set to an invalid value.");
+
+        }
+        //update the player turn
+        try {
+            template.update("UPDATE public.\"Games\" SET \"playerTurn\" = " + newTurn + " WHERE \"gameId\" = " +
+                    gameId + ";");
+        } catch(DataAccessException ex) {
+            throw new InvalidIdException("Error retrieving game id: " + gameId, ex);
         }
     }
 

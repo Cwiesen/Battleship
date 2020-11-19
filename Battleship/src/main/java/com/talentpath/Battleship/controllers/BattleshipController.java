@@ -31,17 +31,17 @@ public class BattleshipController {
     }
 
     @GetMapping("/playerboard/{boardId}")
-    public BattleshipBoard getBoard(@PathVariable Integer boardId) throws InvalidIdException, NullGameException, InvalidPlayerException, InvalidBoardException {
+    public BattleshipBoard getBoard(@PathVariable Integer boardId) throws InvalidIdException, NullBoardException, InvalidPlayerException, InvalidBoardException {
         return service.getPlayerBoard(boardId);
     }
 
     @PutMapping("/placeship")
-    public BattleshipBoard placeShip(@RequestBody PlaceShip toPlace) throws InvalidPlacementException, InvalidIdException, InvalidShipException, NullGameException, InvalidPlayerException, NullBoardException, NullInputException, InvalidBoardException {
+    public BattleshipBoard placeShip(@RequestBody PlaceShip toPlace) throws InvalidPlacementException, InvalidIdException, InvalidShipException, NullGameException, InvalidPlayerException, NullBoardException, NullInputException, InvalidBoardException, InvalidPlayerTurnException {
         return service.placeShip(toPlace);
     }
 
     @PutMapping("/attack")
-    public String attack(@RequestBody PlaceHit toPlace) throws InvalidIdException, NullBoardException, InvalidPlayerException, InvalidShipException, InvalidHitException, NullInputException, InvalidBoardException {
+    public String attack(@RequestBody PlaceHit toPlace) throws InvalidIdException, NullBoardException, InvalidPlayerException, InvalidShipException, InvalidHitException, NullInputException, InvalidBoardException, NullGameException, InvalidPlayerTurnException {
         return service.placeHit(toPlace);
     }
 }

@@ -21,7 +21,7 @@ public interface BattleshipDao {
 
     BattleshipBoard addHit(Integer boardId, Point hitToAdd) throws NullInputException, InvalidIdException, InvalidPlayerException, InvalidHitException, InvalidBoardException;
 
-    void updatePlayerTurn(Integer gameId) throws NullGameException, InvalidIdException, InvalidPlayerTurnException;
+    void updatePlayerTurn(Integer gameId) throws NullGameException, InvalidIdException, InvalidPlayerTurnException, InvalidPlayerException;
 
     List<Point> getOccupiedSquares(BattleshipBoard playerBoard) throws InvalidShipException, NullBoardException;
 

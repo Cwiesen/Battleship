@@ -299,9 +299,9 @@ class InMemBattleshipDaoTest {
             //Check that the hit was added
             fail("Expected error in NullPoint test");
 
-        } catch(InvalidHitException | NullInputException ex) {
+        } catch(InvalidHitException | InvalidBoardException ex) {
             fail("Unexpected exception in NullPoint test: " + ex.getMessage());
-        } catch(InvalidBoardException ex) {
+        } catch(NullInputException ex) {
 
         }
     }

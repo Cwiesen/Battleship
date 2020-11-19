@@ -199,7 +199,6 @@ class BattleshipServiceTest {
         try {
             PlaceShip toPlace = new PlaceShip();
             toPlace.setBoardId(1);
-            toPlace.setPlayerNumber(1);
             toPlace.setShipType("Battleship");
             toPlace.setisHorizontal(false);
             toPlace.setxPos(3);
@@ -212,7 +211,7 @@ class BattleshipServiceTest {
             assertEquals(3, updatedBoard.getPlacedShips().get(1).getStartingSquare().x);
             assertEquals(4, updatedBoard.getPlacedShips().get(1).getStartingSquare().y);
 
-        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | NullInputException | InvalidBoardException ex) {
+        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | NullInputException | InvalidBoardException | NullGameException | InvalidPlayerTurnException ex) {
             fail("Unexpected exception during golden path test: " + ex.getMessage());
         }
     }
@@ -225,7 +224,7 @@ class BattleshipServiceTest {
             fail("Expected error to be thrown.");
 
 
-        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | InvalidBoardException ex) {
+        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | InvalidBoardException | NullGameException | InvalidPlayerTurnException ex) {
             fail("Unexpected exception during null toPlace test: " + ex.getMessage());
         } catch (NullInputException ex) {
 
@@ -237,7 +236,6 @@ class BattleshipServiceTest {
         try {
             PlaceShip toPlace = new PlaceShip();
             toPlace.setBoardId(null);
-            toPlace.setPlayerNumber(1);
             toPlace.setShipType("Battleship");
             toPlace.setisHorizontal(false);
             toPlace.setxPos(3);
@@ -247,30 +245,8 @@ class BattleshipServiceTest {
             fail("Expected error to be thrown.");
 
 
-        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | InvalidBoardException ex) {
+        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | InvalidBoardException | NullGameException | InvalidPlayerTurnException ex) {
             fail("Unexpected exception during null Game Id test: " + ex.getMessage());
-        } catch (NullInputException ex) {
-
-        }
-    }
-
-    @Test
-    void placeShipNullPlayerId() {
-        try {
-            PlaceShip toPlace = new PlaceShip();
-            toPlace.setBoardId(1);
-            toPlace.setPlayerNumber(null);
-            toPlace.setShipType("Battleship");
-            toPlace.setisHorizontal(false);
-            toPlace.setxPos(3);
-            toPlace.setyPos(4);
-
-            BattleshipBoard updatedBoard = serviceToTest.placeShip(toPlace);
-            fail("Expected error to be thrown.");
-
-
-        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | InvalidBoardException ex) {
-            fail("Unexpected exception during null Player Id test: " + ex.getMessage());
         } catch (NullInputException ex) {
 
         }
@@ -281,7 +257,6 @@ class BattleshipServiceTest {
         try {
             PlaceShip toPlace = new PlaceShip();
             toPlace.setBoardId(1);
-            toPlace.setPlayerNumber(1);
             toPlace.setShipType(null);
             toPlace.setisHorizontal(false);
             toPlace.setxPos(3);
@@ -291,7 +266,7 @@ class BattleshipServiceTest {
             fail("Expected error to be thrown.");
 
 
-        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | InvalidBoardException ex) {
+        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | InvalidBoardException | NullGameException | InvalidPlayerTurnException ex) {
             fail("Unexpected exception during null Ship Type test: " + ex.getMessage());
         } catch (NullInputException ex) {
 
@@ -303,7 +278,6 @@ class BattleshipServiceTest {
         try {
             PlaceShip toPlace = new PlaceShip();
             toPlace.setBoardId(1);
-            toPlace.setPlayerNumber(1);
             toPlace.setShipType("Battleship");
             toPlace.setisHorizontal(null);
             toPlace.setxPos(3);
@@ -313,7 +287,7 @@ class BattleshipServiceTest {
             fail("Expected error to be thrown.");
 
 
-        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | InvalidBoardException ex) {
+        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | InvalidBoardException | NullGameException | InvalidPlayerTurnException ex) {
             fail("Unexpected exception during null horizontal test: " + ex.getMessage());
         } catch (NullInputException ex) {
 
@@ -325,7 +299,6 @@ class BattleshipServiceTest {
         try {
             PlaceShip toPlace = new PlaceShip();
             toPlace.setBoardId(1);
-            toPlace.setPlayerNumber(1);
             toPlace.setShipType("Battleship");
             toPlace.setisHorizontal(false);
             toPlace.setxPos(null);
@@ -335,7 +308,7 @@ class BattleshipServiceTest {
             fail("Expected error to be thrown.");
 
 
-        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | InvalidBoardException ex) {
+        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | InvalidBoardException | NullGameException | InvalidPlayerTurnException ex) {
             fail("Unexpected exception during null xPos test: " + ex.getMessage());
         } catch (NullInputException ex) {
 
@@ -347,7 +320,6 @@ class BattleshipServiceTest {
         try {
             PlaceShip toPlace = new PlaceShip();
             toPlace.setBoardId(1);
-            toPlace.setPlayerNumber(1);
             toPlace.setShipType("Battleship");
             toPlace.setisHorizontal(false);
             toPlace.setxPos(3);
@@ -357,7 +329,7 @@ class BattleshipServiceTest {
             fail("Expected error to be thrown.");
 
 
-        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | InvalidBoardException ex) {
+        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidPlacementException | InvalidBoardException | NullGameException | InvalidPlayerTurnException ex) {
             fail("Unexpected exception during null yPos test: " + ex.getMessage());
         } catch (NullInputException ex) {
 
@@ -369,7 +341,6 @@ class BattleshipServiceTest {
         try {
             PlaceShip toPlace = new PlaceShip();
             toPlace.setBoardId(1);
-            toPlace.setPlayerNumber(1);
             toPlace.setShipType("Carrier");
             toPlace.setisHorizontal(false);
             toPlace.setxPos(2);
@@ -379,7 +350,7 @@ class BattleshipServiceTest {
             fail("Expected error to be thrown.");
 
 
-        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | NullInputException | InvalidBoardException ex) {
+        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | NullInputException | InvalidBoardException | NullGameException | InvalidPlayerTurnException ex) {
             fail("Unexpected exception during duplicate ship type test: " + ex.getMessage());
         } catch (InvalidPlacementException ex) {
 
@@ -391,7 +362,6 @@ class BattleshipServiceTest {
         try {
             PlaceShip toPlace = new PlaceShip();
             toPlace.setBoardId(1);
-            toPlace.setPlayerNumber(1);
             toPlace.setShipType("Battleship");
             toPlace.setisHorizontal(false);
             toPlace.setxPos(0);
@@ -401,7 +371,7 @@ class BattleshipServiceTest {
             fail("Expected error to be thrown.");
 
 
-        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | NullInputException | InvalidBoardException ex) {
+        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | NullInputException | InvalidBoardException | NullGameException | InvalidPlayerTurnException ex) {
             fail("Unexpected exception during duplicate ship type test: " + ex.getMessage());
         } catch (InvalidPlacementException ex) {
 
@@ -413,7 +383,6 @@ class BattleshipServiceTest {
         try {
             PlaceShip toPlace = new PlaceShip();
             toPlace.setBoardId(1);
-            toPlace.setPlayerNumber(1);
             toPlace.setShipType("Battleship");
             toPlace.setisHorizontal(true);
             toPlace.setxPos(8);
@@ -423,7 +392,7 @@ class BattleshipServiceTest {
             fail("Expected error to be thrown.");
 
 
-        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | NullInputException | InvalidBoardException ex) {
+        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | NullInputException | InvalidBoardException | NullGameException | InvalidPlayerTurnException ex) {
             fail("Unexpected exception during invalid x pos test: " + ex.getMessage());
         } catch (InvalidPlacementException ex) {
 
@@ -435,7 +404,6 @@ class BattleshipServiceTest {
         try {
             PlaceShip toPlace = new PlaceShip();
             toPlace.setBoardId(1);
-            toPlace.setPlayerNumber(1);
             toPlace.setShipType("Battleship");
             toPlace.setisHorizontal(false);
             toPlace.setxPos(0);
@@ -444,7 +412,7 @@ class BattleshipServiceTest {
             BattleshipBoard updatedBoard = serviceToTest.placeShip(toPlace);
             fail("Expected error to be thrown.");
 
-        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | NullInputException | InvalidBoardException ex) {
+        } catch (InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | NullInputException | InvalidBoardException | NullGameException | InvalidPlayerTurnException ex) {
             fail("Unexpected exception during invalid y pos test: " + ex.getMessage());
         } catch (InvalidPlacementException ex) {
 
@@ -453,11 +421,11 @@ class BattleshipServiceTest {
 
     @Test
     void placeHit(){
+        //todo: Add Game Over test
         try{
             //Miss test
             PlaceHit toPlace1 = new PlaceHit();
             toPlace1.setBoardId(1);
-            toPlace1.setPlayerNumber(1);
             toPlace1.setxPos(2);
             toPlace1.setyPos(3);
 
@@ -467,14 +435,13 @@ class BattleshipServiceTest {
             //Hit test
             PlaceHit toPlace2 = new PlaceHit();
             toPlace2.setBoardId(1);
-            toPlace2.setPlayerNumber(1);
             toPlace2.setxPos(1);
             toPlace2.setyPos(0);
 
             String hitStatus2 = serviceToTest.placeHit(toPlace2);
             assertEquals("Hit!", hitStatus2);
 
-        } catch(InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | NullInputException | InvalidBoardException ex) {
+        } catch(InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | NullInputException | InvalidBoardException | InvalidPlayerTurnException | NullGameException ex) {
             fail("Unexpected exception during golden path test: " + ex.getMessage());
         }
     }
@@ -485,7 +452,7 @@ class BattleshipServiceTest {
             String hitStatus1 = serviceToTest.placeHit(null);
             fail("Expected NullInput exception");
 
-        } catch(InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | InvalidBoardException ex) {
+        } catch(InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | InvalidBoardException | InvalidPlayerTurnException | NullGameException ex) {
             fail("Unexpected exception during NullPlace test: " + ex.getMessage());
         } catch(NullInputException ex) {
 
@@ -497,34 +464,14 @@ class BattleshipServiceTest {
         try{
             PlaceHit toPlace1 = new PlaceHit();
             toPlace1.setBoardId(null);
-            toPlace1.setPlayerNumber(1);
             toPlace1.setxPos(2);
             toPlace1.setyPos(3);
 
             String hitStatus1 = serviceToTest.placeHit(toPlace1);
             fail("Expected NullInput exception");
 
-        } catch(InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | InvalidBoardException ex) {
+        } catch(InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | InvalidBoardException | InvalidPlayerTurnException | NullGameException ex) {
             fail("Unexpected exception during NullGameId test: " + ex.getMessage());
-        } catch(NullInputException ex) {
-
-        }
-    }
-
-    @Test
-    void placeHitNullPlayerNumber(){
-        try{
-            PlaceHit toPlace1 = new PlaceHit();
-            toPlace1.setBoardId(1);
-            toPlace1.setPlayerNumber(null);
-            toPlace1.setxPos(2);
-            toPlace1.setyPos(3);
-
-            String hitStatus1 = serviceToTest.placeHit(toPlace1);
-            fail("Expected NullInput exception");
-
-        } catch(InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | InvalidBoardException ex) {
-            fail("Unexpected exception during NullPlayerNumber test: " + ex.getMessage());
         } catch(NullInputException ex) {
 
         }
@@ -535,14 +482,13 @@ class BattleshipServiceTest {
         try{
             PlaceHit toPlace1 = new PlaceHit();
             toPlace1.setBoardId(1);
-            toPlace1.setPlayerNumber(1);
             toPlace1.setxPos(null);
             toPlace1.setyPos(3);
 
             String hitStatus1 = serviceToTest.placeHit(toPlace1);
             fail("Expected NullInput exception");
 
-        } catch(InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | InvalidBoardException ex) {
+        } catch(InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | InvalidBoardException | InvalidPlayerTurnException | NullGameException ex) {
             fail("Unexpected exception during NullX test: " + ex.getMessage());
         } catch(NullInputException ex) {
 
@@ -554,14 +500,13 @@ class BattleshipServiceTest {
         try{
             PlaceHit toPlace1 = new PlaceHit();
             toPlace1.setBoardId(1);
-            toPlace1.setPlayerNumber(1);
             toPlace1.setxPos(2);
             toPlace1.setyPos(null);
 
             String hitStatus1 = serviceToTest.placeHit(toPlace1);
             fail("Expected NullInput exception");
 
-        } catch(InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | InvalidBoardException ex) {
+        } catch(InvalidIdException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | InvalidBoardException | InvalidPlayerTurnException | NullGameException ex) {
             fail("Unexpected exception during NullY test: " + ex.getMessage());
         } catch(NullInputException ex) {
 
@@ -573,14 +518,13 @@ class BattleshipServiceTest {
         try{
             PlaceHit toPlace1 = new PlaceHit();
             toPlace1.setBoardId(2);
-            toPlace1.setPlayerNumber(1);
             toPlace1.setxPos(2);
             toPlace1.setyPos(3);
 
             String hitStatus1 = serviceToTest.placeHit(toPlace1);
             fail("Expected NullInput exception");
 
-        } catch(NullInputException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | InvalidBoardException ex) {
+        } catch(NullInputException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | InvalidBoardException | InvalidPlayerTurnException | NullGameException ex) {
             fail("Unexpected exception during InvalidGameId test: " + ex.getMessage());
         } catch(InvalidIdException ex) {
 
@@ -592,14 +536,13 @@ class BattleshipServiceTest {
         try{
             PlaceHit toPlace1 = new PlaceHit();
             toPlace1.setBoardId(2);
-            toPlace1.setPlayerNumber(1);
             toPlace1.setxPos(2);
             toPlace1.setyPos(3);
 
             String hitStatus1 = serviceToTest.placeHit(toPlace1);
             fail("Expected NullInput exception");
 
-        } catch(NullInputException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | InvalidBoardException ex) {
+        } catch(NullInputException | InvalidPlayerException | InvalidShipException | NullBoardException | InvalidHitException | InvalidBoardException | InvalidPlayerTurnException | NullGameException ex) {
             fail("Unexpected exception during InvalidPlayer test: " + ex.getMessage());
         } catch(InvalidIdException ex) {
 
@@ -611,14 +554,13 @@ class BattleshipServiceTest {
         try{
             PlaceHit toPlace1 = new PlaceHit();
             toPlace1.setBoardId(1);
-            toPlace1.setPlayerNumber(1);
             toPlace1.setxPos(0);
             toPlace1.setyPos(0);
 
             String hitStatus1 = serviceToTest.placeHit(toPlace1);
             fail("Expected InvalidHit exception");
 
-        } catch(NullInputException | InvalidIdException | InvalidShipException | NullBoardException | InvalidPlayerException | InvalidBoardException ex) {
+        } catch(NullInputException | InvalidIdException | InvalidShipException | NullBoardException | InvalidPlayerException | InvalidBoardException | InvalidPlayerTurnException | NullGameException ex) {
             fail("Unexpected exception during ExistingPoint test: " + ex.getMessage());
         } catch(InvalidHitException ex) {
 
@@ -630,14 +572,13 @@ class BattleshipServiceTest {
         try{
             PlaceHit toPlace1 = new PlaceHit();
             toPlace1.setBoardId(2);
-            toPlace1.setPlayerNumber(1);
             toPlace1.setxPos(10);
             toPlace1.setyPos(3);
 
             String hitStatus1 = serviceToTest.placeHit(toPlace1);
             fail("Expected NullInput exception");
 
-        } catch(NullInputException | InvalidIdException | InvalidShipException | NullBoardException | InvalidPlayerException | InvalidBoardException ex) {
+        } catch(NullInputException | InvalidIdException | InvalidShipException | NullBoardException | InvalidPlayerException | InvalidBoardException | InvalidPlayerTurnException | NullGameException ex) {
             fail("Unexpected exception during TooHighX test: " + ex.getMessage());
         } catch(InvalidHitException ex) {
 
@@ -649,14 +590,13 @@ class BattleshipServiceTest {
         try{
             PlaceHit toPlace1 = new PlaceHit();
             toPlace1.setBoardId(2);
-            toPlace1.setPlayerNumber(1);
             toPlace1.setxPos(2);
             toPlace1.setyPos(10);
 
             String hitStatus1 = serviceToTest.placeHit(toPlace1);
             fail("Expected NullInput exception");
 
-        } catch(NullInputException | InvalidIdException | InvalidShipException | NullBoardException | InvalidPlayerException | InvalidBoardException ex) {
+        } catch(NullInputException | InvalidIdException | InvalidShipException | NullBoardException | InvalidPlayerException | InvalidBoardException | InvalidPlayerTurnException | NullGameException ex) {
             fail("Unexpected exception during TooHighY test: " + ex.getMessage());
         } catch(InvalidHitException ex) {
 
@@ -668,14 +608,13 @@ class BattleshipServiceTest {
         try{
             PlaceHit toPlace1 = new PlaceHit();
             toPlace1.setBoardId(2);
-            toPlace1.setPlayerNumber(1);
             toPlace1.setxPos(-1);
             toPlace1.setyPos(3);
 
             String hitStatus1 = serviceToTest.placeHit(toPlace1);
             fail("Expected NullInput exception");
 
-        } catch(NullInputException | InvalidIdException | InvalidShipException | NullBoardException | InvalidPlayerException | InvalidBoardException ex) {
+        } catch(NullInputException | InvalidIdException | InvalidShipException | NullBoardException | InvalidPlayerException | InvalidBoardException | InvalidPlayerTurnException | NullGameException ex) {
             fail("Unexpected exception during TooLowX test: " + ex.getMessage());
         } catch(InvalidHitException ex) {
 
@@ -687,14 +626,13 @@ class BattleshipServiceTest {
         try{
             PlaceHit toPlace1 = new PlaceHit();
             toPlace1.setBoardId(2);
-            toPlace1.setPlayerNumber(1);
             toPlace1.setxPos(2);
             toPlace1.setyPos(-1);
 
             String hitStatus1 = serviceToTest.placeHit(toPlace1);
             fail("Expected NullInput exception");
 
-        } catch(NullInputException | InvalidIdException | InvalidShipException | NullBoardException | InvalidPlayerException | InvalidBoardException ex) {
+        } catch(NullInputException | InvalidIdException | InvalidShipException | NullBoardException | InvalidPlayerException | InvalidBoardException | InvalidPlayerTurnException | NullGameException ex) {
             fail("Unexpected exception during TooLowY test: " + ex.getMessage());
         } catch(InvalidHitException ex) {
 

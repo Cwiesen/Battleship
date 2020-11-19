@@ -57,21 +57,11 @@ public class BattleshipService {
         return retrievedGame;
     }
 
-    public BattleshipBoard getPlayerBoard(Integer gameId, Integer playerNumber) throws InvalidPlayerException, InvalidIdException, NullGameException, InvalidBoardException {
-        if (gameId == null || playerNumber == null) {
-            throw new NullGameException("Tried to get a game using null values.");
+    public BattleshipBoard getPlayerBoard(Integer boardId) throws InvalidPlayerException, InvalidIdException, NullBoardException, InvalidBoardException {
+        if (boardId == null) {
+            throw new NullBoardException("Tried to get a board using null values.");
         }
-        //Retrieve the game
-        BattleshipGame retrievedGame = dao.getGameById(gameId);
-        //Get the board for the correct player
-        switch(playerNumber) {
-            case 1:
-                return dao.getPlayerBoard(retrievedGame.getPlayer1().getBoardId());
-            case 2:
-                return dao.getPlayerBoard(retrievedGame.getPlayer2().getBoardId());
-            default:
-                throw new InvalidPlayerException("Player number must be 1 or 2.");
-        }
+            return dao.getPlayerBoard(boardId);
     }
 
     public BattleshipBoard placeShip(PlaceShip toPlace) throws InvalidIdException, InvalidPlayerException, InvalidShipException, NullBoardException, InvalidPlacementException, NullInputException, InvalidBoardException, NullGameException, InvalidPlayerTurnException {
