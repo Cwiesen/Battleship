@@ -1,0 +1,15 @@
+div {
+    block-size: 25px;
+    width: 25px;
+    height: 25px;
+}
+
+span {
+    position: relative;
+    cursor: pointer;
+    background-color: #EEE;
+    margin: .5em;
+    padding: .3em 0;
+    height: .5em;
+    border-radius: 4px;
+}

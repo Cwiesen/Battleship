@@ -154,8 +154,6 @@ public class BattleshipService {
         //Add a hit to the player's board
         BattleshipBoard playerBoard = dao.addHit(hitToPlace.getBoardId(), newHit);
 
-        //TODO Check if a game is over, update player turn if miss
-
         //Get a list of occupied squares
         List<Point> occupiedSquares = dao.getOccupiedSquares(playerBoard);
 
@@ -163,9 +161,9 @@ public class BattleshipService {
         if (occupiedSquares.contains(newHit)) {
             //Check if all ships have been hit
             if (checkGameOver(playerBoard)) {
-
+                return "Game Over!";
             }
-            //Return 'Hit' if square is occupied
+            //Return 'Hit' if square is occupied and keep player turn the same.
             return "Hit!";
         }
         //Update the player turn and return 'Miss' if square is not occupied
@@ -173,7 +171,16 @@ public class BattleshipService {
         return "Miss!";
     }
 
-    private boolean checkGameOver(BattleshipBoard playerBoard) {
-        
+    private boolean checkGameOver(BattleshipBoard playerBoard) throws InvalidShipException, NullBoardException {
+        //Check if all ship squares have been hit for a board
+        List<Point> occupiedSquares = dao.getOccupiedSquares(playerBoard);
+        List<Point> hitSquares = playerBoard.getBoardHits();
+
+        for (Point square: occupiedSquares) {
+            if (!hitSquares.contains(square)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
