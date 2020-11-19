@@ -225,6 +225,18 @@ class PostgresBattleshipDaoTest {
     }
 
     @Test
+    void updatePlayerTurn() {
+        try {
+            daoToTest.updatePlayerTurn(1);
+
+            BattleshipGame retrievedGame = daoToTest.getGameById(1);
+            assertEquals(1, retrievedGame.getPlayerTurn());
+    } catch(InvalidIdException | NullGameException | InvalidPlayerTurnException | InvalidPlayerException ex) {
+        fail("Unexpected error during golden path test: " + ex.getMessage());
+    }
+    }
+
+    @Test
     void addShip() {
 
         try {

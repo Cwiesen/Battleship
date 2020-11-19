@@ -188,9 +188,9 @@ public class InMemBattleshipDao implements BattleshipDao {
                     throw new InvalidPlacementException("Tried to place ship on a space that already contains a ship.");
                 }
             }
-            //Add the ship
-            currentShips.add(toPlace);
         }
+        //Add the ship
+        currentShips.add(toPlace);
         //Return a copy of the updated board.
         return new BattleshipBoard(playerBoard);
     }

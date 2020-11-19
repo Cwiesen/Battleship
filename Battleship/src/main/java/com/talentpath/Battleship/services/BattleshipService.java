@@ -119,17 +119,20 @@ public class BattleshipService {
         }
 
         //Get the BattleshipGame
-        BattleshipGame retrievedGame = dao.getGameById(hitToPlace.getBoardId());
+        BattleshipGame retrievedGame = dao.getGameById(hitToPlace.getGameId());
 
+        if (hitToPlace.getBoardId() != retrievedGame.getPlayer1().getBoardId() && hitToPlace.getBoardId() != retrievedGame.getPlayer2().getBoardId()) {
+            throw new InvalidBoardException("Attempted to add a hit to a board not part of this game.");
+        }
         //Throw an error if it is not the correct players turn
         if (retrievedGame.getPlayerTurn() == 0) {
             throw new InvalidPlayerTurnException("A shot cannot be made until all ships are placed.");
         }
 
-        if (retrievedGame.getPlayerTurn() == 1 && retrievedGame.getPlayer1().getBoardId() != hitToPlace.getBoardId() ) {
+        if (retrievedGame.getPlayerTurn() == 1 && retrievedGame.getPlayer2().getBoardId() != hitToPlace.getBoardId() ) {
             throw new InvalidPlayerTurnException("It is currently Player 1's turn.");
         }
-        if (retrievedGame.getPlayerTurn() == 2 && retrievedGame.getPlayer2().getBoardId() != hitToPlace.getBoardId()) {
+        if (retrievedGame.getPlayerTurn() == 2 && retrievedGame.getPlayer1().getBoardId() != hitToPlace.getBoardId()) {
             throw new InvalidPlayerTurnException("It is currently Player 2's turn.");
         }
 

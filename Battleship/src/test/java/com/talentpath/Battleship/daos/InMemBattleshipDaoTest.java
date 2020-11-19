@@ -213,16 +213,54 @@ class InMemBattleshipDaoTest {
     }
 
     @Test
+    void updatePlayerTurn() {
+        try {
+            //Player Turn 0 to 1
+            daoToTest.updatePlayerTurn(1);
+
+            BattleshipGame retrievedGame = daoToTest.getGameById(1);
+            assertEquals(1, retrievedGame.getPlayerTurn());
+
+            //Player Turn 1 to 2
+            daoToTest.updatePlayerTurn(1);
+
+            retrievedGame = daoToTest.getGameById(1);
+            assertEquals(2, retrievedGame.getPlayerTurn());
+
+            //Player Turn 2 to 1
+            daoToTest.updatePlayerTurn(1);
+
+            retrievedGame = daoToTest.getGameById(1);
+            assertEquals(1, retrievedGame.getPlayerTurn());
+        } catch(InvalidIdException | NullGameException | InvalidPlayerTurnException ex) {
+            fail("Unexpected error during golden path test: " + ex.getMessage());
+        }
+    }
+
+    @Test
+    void updatePlayerTurnInvalidGame() {
+        try {
+            //Test on game that doesn't exist
+            daoToTest.updatePlayerTurn(2);
+            fail("Expected InvalidIdException");
+            } catch(NullGameException | InvalidPlayerTurnException ex) {
+            fail("Unexpected exception during InvalidGameId test." + ex.getMessage());
+        } catch(InvalidIdException ex) {
+
+        }
+    }
+
+    @Test
     void addShip() {
 
         try {
-            Ship shipToAdd = new Ship();
+            Ship battleshipToAdd = new Ship();
+            battleshipToAdd.setShipType("Battleship");
+            battleshipToAdd.setHorizontal(false);
+            battleshipToAdd.setStartingSquare(new Point(3, 5));
 
-            shipToAdd.setShipType("Battleship");
-            shipToAdd.setHorizontal(false);
-            shipToAdd.setStartingSquare(new Point(3, 5));
-
-            daoToTest.addShip(1, shipToAdd);
+            //Add ship Vertical
+            daoToTest.addShip(1, battleshipToAdd);
 
             BattleshipGame retrievedGame = daoToTest.getGameById(1);
             List<Ship> player1Ships = retrievedGame.getPlayer1().getPlacedShips();
@@ -231,6 +269,21 @@ class InMemBattleshipDaoTest {
             assertFalse(player1Ships.get(1).getHorizontal());
             assertEquals(3, player1Ships.get(1).getStartingSquare().x);
             assertEquals(5, player1Ships.get(1).getStartingSquare().y);
+
+            //Add ship Horizontal
+            Ship cruiserToAdd = new Ship();
+            cruiserToAdd.setShipType("Cruiser");
+            cruiserToAdd.setHorizontal(true);
+            cruiserToAdd.setStartingSquare(new Point(1, 1));
+
+            daoToTest.addShip(2, cruiserToAdd);
+            retrievedGame = daoToTest.getGameById(1);
+            List<Ship> player2Ships = retrievedGame.getPlayer2().getPlacedShips();
+            assertEquals(1, player2Ships.size());
+            assertEquals("Cruiser", player2Ships.get(0).getShipType());
+            assertTrue(player2Ships.get(0).getHorizontal());
+            assertEquals(1, player2Ships.get(0).getStartingSquare().x);
+            assertEquals(1, player2Ships.get(0).getStartingSquare().y);
 
         } catch (InvalidIdException | InvalidShipException | NullInputException | NullBoardException | InvalidPlacementException | InvalidBoardException ex) {
             fail("Unexpected exception during golden path test" + ex.getMessage());
