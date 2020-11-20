@@ -3,7 +3,6 @@ package com.talentpath.Battleship.daos;
 import com.talentpath.Battleship.exceptions.*;
 import com.talentpath.Battleship.models.*;
 
-import java.awt.*;
 import java.util.List;
 
 public interface BattleshipDao {

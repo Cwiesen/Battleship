@@ -1,7 +1,5 @@
 package com.talentpath.Battleship.models;
 
-import com.talentpath.Battleship.daos.BattleshipDao;
-
 public class BattleshipGame {
     private Integer gameId;
     private BattleshipBoard player1;

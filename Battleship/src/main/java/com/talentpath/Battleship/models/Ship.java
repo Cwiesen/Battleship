@@ -1,9 +1,5 @@
 package com.talentpath.Battleship.models;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Ship {
     private String shipType;
     private Boolean isHorizontal;

@@ -1,10 +1,7 @@
 package com.talentpath.Battleship.daos;
 
 import com.talentpath.Battleship.exceptions.*;
-import com.talentpath.Battleship.models.BattleshipBoard;
-import com.talentpath.Battleship.models.BattleshipGame;
-import com.talentpath.Battleship.models.PlaceShip;
-import com.talentpath.Battleship.models.Ship;
+import com.talentpath.Battleship.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,8 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
