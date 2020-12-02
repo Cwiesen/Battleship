@@ -1,6 +1,8 @@
 package com.talentpath.Battleship.models;
 
-public class Point {
+import java.util.Objects;
+
+public class Point{
     //Custom point class for Battleship
     public int x;
     public int y;
@@ -19,4 +21,25 @@ public class Point {
         this.y = y;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Point)) return false;
+
+        Point point = (Point) o;
+
+        if (x != point.x) return false;
+        return y == point.y;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
+    }
+
+    public String toString() {
+        return "x: " + this.x + ", y: " + this.y;
+    }
 }

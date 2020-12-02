@@ -10,7 +10,7 @@ public interface BattleshipDao {
 
     BattleshipGame addGame(Integer player1, Integer player2) throws InvalidPlayerException, InvalidIdException;
 
-    Integer createNewPlayer();
+//    Integer createNewPlayer();
 
     BattleshipGame getGameById(Integer gameId) throws InvalidIdException, InvalidPlayerException;
 
@@ -18,12 +18,15 @@ public interface BattleshipDao {
 
     BattleshipBoard addShip(Integer boardId, Ship toPlace) throws InvalidIdException, InvalidPlayerException, InvalidShipException, NullInputException, NullBoardException, InvalidPlacementException, InvalidBoardException;
 
-    BattleshipBoard addHit(Integer boardId, Point hitToAdd) throws NullInputException, InvalidIdException, InvalidPlayerException, InvalidHitException, InvalidBoardException;
+    BattleshipBoard addHit(Integer boardId, Point hitToAdd) throws NullInputException, InvalidIdException, InvalidPlayerException, InvalidHitException, InvalidBoardException, InvalidShipException, NullBoardException, InvalidGameException;
 
     void updatePlayerTurn(Integer gameId) throws NullGameException, InvalidIdException, InvalidPlayerTurnException, InvalidPlayerException;
 
     List<Point> getOccupiedSquares(BattleshipBoard playerBoard) throws InvalidShipException, NullBoardException;
 
+    List<BattleshipGame> getGamesByUsername(String playerId) throws InvalidPlayerException;
+
     void reset();
 
+    List<HitPoint> getBoardHits(Integer boardId) throws InvalidBoardException, InvalidShipException, NullBoardException;
 }

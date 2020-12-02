@@ -32,13 +32,6 @@ public class BattleshipService {
         if (player1 == null || player2 == null) {
             throw new InvalidPlayerException("Tried to start a game with null players");
         }
-        //If a player is zero, build a new player
-        if (player1 == 0) {
-            player1 = dao.createNewPlayer();
-        }
-        if (player2 == 0) {
-            player2 = dao.createNewPlayer();
-        }
         //Ask the dao to build a new game
         return dao.addGame(player1, player2);
     }
@@ -63,7 +56,7 @@ public class BattleshipService {
             return dao.getPlayerBoard(boardId);
     }
 
-    public BattleshipBoard placeShip(PlaceShip toPlace) throws InvalidIdException, InvalidPlayerException, InvalidShipException, NullBoardException, InvalidPlacementException, NullInputException, InvalidBoardException, NullGameException, InvalidPlayerTurnException {
+    public BattleshipBoard placeShip(ShipPlacer toPlace) throws InvalidIdException, InvalidPlayerException, InvalidShipException, NullBoardException, InvalidPlacementException, NullInputException, InvalidBoardException, NullGameException, InvalidPlayerTurnException {
 
         //Check for null values
         if (toPlace == null || toPlace.getBoardId() == null || toPlace.getGameId() == null || toPlace.getShipType() == null ||
@@ -89,7 +82,7 @@ public class BattleshipService {
         //Build the ship object
         Ship newShip = new Ship();
         newShip.setShipType(toPlace.getShipType());
-        newShip.setHorizontal(toPlace.getisHorizontal());
+        newShip.setisHorizontal(toPlace.getisHorizontal());
         newShip.setStartingSquare(new Point(toPlace.getxPos(), toPlace.getyPos()));
 
         //Place the ship
@@ -110,7 +103,7 @@ public class BattleshipService {
         return dao.getPlayerBoard(playerBoard.getBoardId());
     }
 
-    public String placeHit(PlaceHit hitToPlace) throws InvalidIdException, InvalidPlayerException, InvalidShipException, NullBoardException, InvalidHitException, NullInputException, InvalidBoardException, InvalidPlayerTurnException, NullGameException {
+    public String placeHit(HitPlacer hitToPlace) throws InvalidIdException, InvalidPlayerException, InvalidShipException, NullBoardException, InvalidHitException, NullInputException, InvalidBoardException, InvalidPlayerTurnException, NullGameException, InvalidGameException {
         //Check for null values
         if(hitToPlace == null || hitToPlace.getBoardId() == null || hitToPlace.getGameId() == null || hitToPlace.getBoardId() == null ||
             hitToPlace.getxPos() == null || hitToPlace.getyPos() == null) {
@@ -174,5 +167,13 @@ public class BattleshipService {
             }
         }
         return true;
+    }
+
+    public List<BattleshipGame> getGamesByUsername(String username) throws InvalidPlayerException {
+        return dao.getGamesByUsername(username);
+    }
+
+    public List<HitPoint> getBoardHits(Integer boardId) throws InvalidBoardException, NullBoardException, InvalidShipException {
+        return dao.getBoardHits(boardId);
     }
 }

@@ -120,13 +120,6 @@ class InMemBattleshipDaoTest {
     }
 
     @Test
-    void createNewPlayer() {
-        //Test that next highest playerId is generated.
-        Integer playerId = daoToTest.createNewPlayer();
-        assertEquals(3, playerId);
-    }
-
-    @Test
     void getGameById() {
 
         try {
@@ -251,7 +244,7 @@ class InMemBattleshipDaoTest {
         try {
             Ship battleshipToAdd = new Ship();
             battleshipToAdd.setShipType("Battleship");
-            battleshipToAdd.setHorizontal(false);
+            battleshipToAdd.setisHorizontal(false);
             battleshipToAdd.setStartingSquare(new Point(3, 5));
 
             //Add ship Vertical
@@ -261,14 +254,14 @@ class InMemBattleshipDaoTest {
             List<Ship> player1Ships = retrievedGame.getPlayer1().getPlacedShips();
             assertEquals(2, player1Ships.size());
             assertEquals("Battleship", player1Ships.get(1).getShipType());
-            assertFalse(player1Ships.get(1).getHorizontal());
+            assertFalse(player1Ships.get(1).getisHorizontal());
             assertEquals(3, player1Ships.get(1).getStartingSquare().x);
             assertEquals(5, player1Ships.get(1).getStartingSquare().y);
 
             //Add ship Horizontal
             Ship cruiserToAdd = new Ship();
             cruiserToAdd.setShipType("Cruiser");
-            cruiserToAdd.setHorizontal(true);
+            cruiserToAdd.setisHorizontal(true);
             cruiserToAdd.setStartingSquare(new Point(1, 1));
 
             daoToTest.addShip(2, cruiserToAdd);
@@ -276,7 +269,7 @@ class InMemBattleshipDaoTest {
             List<Ship> player2Ships = retrievedGame.getPlayer2().getPlacedShips();
             assertEquals(1, player2Ships.size());
             assertEquals("Cruiser", player2Ships.get(0).getShipType());
-            assertTrue(player2Ships.get(0).getHorizontal());
+            assertTrue(player2Ships.get(0).getisHorizontal());
             assertEquals(1, player2Ships.get(0).getStartingSquare().x);
             assertEquals(1, player2Ships.get(0).getStartingSquare().y);
 

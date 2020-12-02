@@ -10,14 +10,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins="http://localhost:4200")
 public class BattleshipController {
 
     @Autowired
     BattleshipService service;
-
-    @PostMapping("/begin/{player1}/{player2}")
-    public BattleshipGame beginGame(@PathVariable Integer player1, @PathVariable Integer player2) throws InvalidPlayerException, InvalidIdException {
-        return service.beginGame(player1, player2);
+    @PostMapping("/begin")
+    public BattleshipGame beginGame(@RequestBody NewGameBuilder newGame) throws InvalidPlayerException, InvalidIdException {
+        return service.beginGame(newGame.getPlayer1(), newGame.getPlayer2());
     }
 
     @GetMapping("/games")
@@ -30,18 +30,28 @@ public class BattleshipController {
         return service.getGameById(gameId);
     }
 
+    @GetMapping("/gamesByUsername/{username}")
+        public List<BattleshipGame> getGamesByUsername(@PathVariable String username) throws InvalidPlayerException {
+            return service.getGamesByUsername(username);
+        }
+
     @GetMapping("/playerboard/{boardId}")
     public BattleshipBoard getBoard(@PathVariable Integer boardId) throws InvalidIdException, NullBoardException, InvalidPlayerException, InvalidBoardException {
         return service.getPlayerBoard(boardId);
     }
 
+    @GetMapping("/boardHits/{boardId}")
+    public List<HitPoint> getBoardHits(@PathVariable Integer boardId) throws InvalidBoardException, NullBoardException, InvalidShipException {
+        return service.getBoardHits(boardId);
+    }
+
     @PutMapping("/placeship")
-    public BattleshipBoard placeShip(@RequestBody PlaceShip toPlace) throws InvalidPlacementException, InvalidIdException, InvalidShipException, NullGameException, InvalidPlayerException, NullBoardException, NullInputException, InvalidBoardException, InvalidPlayerTurnException {
+    public BattleshipBoard placeShip(@RequestBody ShipPlacer toPlace) throws InvalidPlacementException, InvalidIdException, InvalidShipException, NullGameException, InvalidPlayerException, NullBoardException, NullInputException, InvalidBoardException, InvalidPlayerTurnException {
         return service.placeShip(toPlace);
     }
 
     @PutMapping("/attack")
-    public String attack(@RequestBody PlaceHit toPlace) throws InvalidIdException, NullBoardException, InvalidPlayerException, InvalidShipException, InvalidHitException, NullInputException, InvalidBoardException, NullGameException, InvalidPlayerTurnException {
+    public String attack(@RequestBody HitPlacer toPlace) throws InvalidIdException, NullBoardException, InvalidPlayerException, InvalidShipException, InvalidHitException, NullInputException, InvalidBoardException, NullGameException, InvalidPlayerTurnException, InvalidGameException {
         return service.placeHit(toPlace);
     }
 }

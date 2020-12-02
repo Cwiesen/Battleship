@@ -1,11 +1,9 @@
 package com.talentpath.Battleship.models;
 
-public class PlaceShip {
+public class HitPlacer {
 
     Integer gameId;
     Integer boardId;
-    String shipType;
-    Boolean isHorizontal;
     Integer xPos;
     Integer yPos;
 
@@ -23,22 +21,6 @@ public class PlaceShip {
 
     public void setBoardId(Integer boardId) {
         this.boardId = boardId;
-    }
-
-    public String getShipType() {
-        return shipType;
-    }
-
-    public void setShipType(String shipType) {
-        this.shipType = shipType;
-    }
-
-    public Boolean getisHorizontal() {
-        return isHorizontal;
-    }
-
-    public void setisHorizontal(Boolean horizontal) {
-        isHorizontal = horizontal;
     }
 
     public Integer getxPos() {

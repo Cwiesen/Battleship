@@ -1,0 +1,29 @@
+h3 {
+    padding-top: 10px;
+}
+
+input {
+    width : 200px;
+    margin-bottom: 5px;
+    display: inline-block;
+  }
+
+  label {
+    text-align: right;
+    width : 90px;
+    margin-right: 10px;
+    display: inline-block;
+  }
+
+  button {
+      margin-bottom: 5px;
+  }
+
+  form {
+    padding-top: 20px;
+    display: inline-block;
+}
+
+.loginTitle {
+  margin: 0;
+}

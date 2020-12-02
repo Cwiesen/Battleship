@@ -1,4 +1,23 @@
-<h3>Player 1</h3>
-<div *ngFor="let square of boardSquares">
-    <span *ngFor="let square2 of boardSquares">{{square2}}</span>
+<div class="contents" >
+    <div *ngIf="message">{{message}}</div>
+    <div class="boardHolder" *ngIf="opponentArray.length>0">
+        <h3>Opponent's Board</h3>
+        <div class="oboard">
+            <span class="boardDiv" *ngFor="let square of opponentArray; let j = index">
+                <div *ngIf="j % 10 == 0" class="row"></div>
+                <span class={{square}} (click)="attack(j)"> </span>
+            </span>
+        </div>
+    </div>
+    <h3>Your Board</h3>
+    <div *ngIf="game.playerTurn == 0">
+        <label>Place Ship Horizontally</label>
+        <input type="checkbox" class="horizontal" checked (change)="checkHorizontal($event)">
+    </div>
+    <div class="pboard"> 
+        <span class="boardDiv" *ngFor="let square of boardArray; let i = index">
+            <div *ngIf="i % 10 == 0" class="row"></div>
+            <span class={{square}} (click)="placeShip(i)"> </span>
+        </span>
+    </div>
 </div>

@@ -13,11 +13,11 @@ public class Ship {
         this.shipType = shipType;
     }
 
-    public Boolean getHorizontal() {
+    public Boolean getisHorizontal() {
         return isHorizontal;
     }
 
-    public void setHorizontal(Boolean horizontal) {
+    public void setisHorizontal(Boolean horizontal) {
         isHorizontal = horizontal;
     }
 

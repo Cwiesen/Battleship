@@ -1,0 +1,33 @@
+<div class="contents">
+    <h2>Dashboard</h2>
+    <h4>Begin New Game</h4>
+    <form *ngIf="userData.roles.includes('ROLE_ADMIN'); else singleForm">
+        <label>Player 1 id: </label>
+        <input type="text" name="p1Id" maxlength="3" [(ngModel)]="newGameData.player1">
+        <label>  Player 2 id: </label>
+        <input type="text" name="p2Id" maxlength="3" [(ngModel)]="newGameData.player2"><br>
+        <button (click)="beginGame()">Begin Game</button>
+    </form>
+    <div class="allGames" *ngIf="userData.roles.includes('ROLE_ADMIN')">
+        <h4>All Games</h4>
+        <div class="activeGame" *ngFor="let game of allGames" (click)="selectGame(game)">
+            Player 1: {{game.player1.playerId}}, Player 2: {{game.player2.playerId}}, 
+            <div *ngIf="game.playerTurn !== 0;else setup">Player Turn: {{game.playerTurn}}</div>
+
+        </div>
+    </div>
+    <h4>Active Games</h4>
+        <div class="activeGame" *ngFor="let game of playerGames" (click)="selectGame(game)">
+            Player 1: {{game.player1.playerId}}, Player 2: {{game.player2.playerId}} 
+            <div *ngIf="game.playerTurn !== 0;else setup">Player Turn: {{game.playerTurn}}</div>
+        </div>
+</div>
+<ng-template #setup><div>Setup Phase</div></ng-template>
+<ng-template #singleForm>
+    <form>
+        <label>Opponent id: </label>
+        <input type="text" name="opponentId" maxlength="3" [(ngModel)]="newGameData.player2">
+        <input type="text" name="ownId" hidden maxlength="3" [(ngModel)]="newGameData.player1"><br>
+        <button (click)="beginGame()">Begin Game</button>
+    </form>
+</ng-template>

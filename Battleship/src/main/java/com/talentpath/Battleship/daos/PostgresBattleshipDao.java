@@ -69,13 +69,13 @@ public class PostgresBattleshipDao implements BattleshipDao {
         return getGameById(gameId.get(0));
     }
 
-    @Override
-    public Integer createNewPlayer() {
-        //Build a new player into the Players table
-        List<Integer> insertedIds = template.query( "insert into \"Players\" (\"name\") VALUES ('default') returning \"playerId\";", new PlayerMapper());
-        //Return the playerId
-        return insertedIds.get(0);
-    }
+//    @Override
+//    public Integer createNewPlayer() {
+//        //Build a new player into the Players table
+//        List<Integer> insertedIds = template.query( "insert into \"Players\" (\"name\") VALUES ('default') returning \"playerId\";", new PlayerMapper());
+//        //Return the playerId
+//        return insertedIds.get(0);
+//    }
 
     @Override
     public BattleshipGame getGameById(Integer gameId) throws InvalidIdException, InvalidPlayerException {
@@ -113,10 +113,10 @@ public class PostgresBattleshipDao implements BattleshipDao {
         //Set the PlayerId
         try {
             playerId = template.queryForObject("select * from \"PlayerBoards\" as boards " +
-                    "where \"boardId\" = " + boardId + ";", new PlayerMapper());
+                    "where \"boardId\" = " + boardId + ";", new BoardPlayerMapper());
             //Throw an exception if a playerId does not exist for board
         } catch(DataAccessException ex) {
-            throw new InvalidBoardException("Board does not exist with id " + boardId + ": ", ex);
+            throw new InvalidBoardException("Board does not exist with id " + boardId + ".", ex);
         }
         //Retrieve and set the ships for the board
         try {
@@ -144,7 +144,7 @@ public class PostgresBattleshipDao implements BattleshipDao {
     @Override
     public BattleshipBoard addShip(Integer boardId, Ship toPlace) throws NullInputException, InvalidShipException, InvalidBoardException, InvalidPlacementException, NullBoardException {
         //Add a ship for the given game and player
-        if (boardId == null || toPlace == null || toPlace.getShipType() == null || toPlace.getHorizontal() == null ||
+        if (boardId == null || toPlace == null || toPlace.getShipType() == null || toPlace.getisHorizontal() == null ||
                 toPlace.getStartingSquare() == null) {
             throw new NullInputException("Attempted to place a ship with null values.");
         }
@@ -173,7 +173,7 @@ public class PostgresBattleshipDao implements BattleshipDao {
         List<Point> occupiedSquares = getOccupiedSquares(getPlayerBoard(boardId));
 
         //Place the ship based on orientation
-        if (toPlace.getHorizontal()) {
+        if (toPlace.getisHorizontal()) {
             //Ships starting x position
             int shipStartingX = toPlace.getStartingSquare().x;
             //Ships cannot exceed board length
@@ -199,30 +199,47 @@ public class PostgresBattleshipDao implements BattleshipDao {
                     throw new InvalidPlacementException("Tried to place ship on a space that already contains a ship.");
                 }
             }
-            //Add the ship
-            try {
-                template.update("INSERT INTO \"Ships\" (\"boardId\", \"shipType\", \"isHorizontal\", \"startingRow\", \"startingColumn\") " +
-                        "VALUES (" + boardId + ", '" + toPlace.getShipType() + "', '" + toPlace.getHorizontal() + "', " + toPlace.getStartingSquare().x + ", " + toPlace.getStartingSquare().y + ");");
-            }catch(DataAccessException ex) {
-                throw new InvalidBoardException("Board with id " + boardId + "does not exist. " + ex);
-            }
+        }
+        //Add the ship
+        try {
+            template.update("INSERT INTO \"Ships\" (\"boardId\", \"shipType\", \"isHorizontal\", \"startingRow\", \"startingColumn\") " +
+                    "VALUES (" + boardId + ", '" + toPlace.getShipType() + "', '" + toPlace.getisHorizontal() + "', " + toPlace.getStartingSquare().x + ", " + toPlace.getStartingSquare().y + ");");
+        }catch(DataAccessException ex) {
+            throw new InvalidBoardException("Board with id " + boardId + "does not exist. " + ex);
         }
         //Return the updated board;
         return getPlayerBoard(boardId);
     }
 
     @Override
-    public BattleshipBoard addHit(Integer boardId, Point hitToAdd) throws NullInputException, InvalidBoardException, InvalidHitException {
+    public BattleshipBoard addHit(Integer boardId, Point hitToAdd) throws NullInputException, InvalidBoardException, InvalidHitException, InvalidShipException, NullBoardException, InvalidGameException {
         //Add a Hit to the game
         if(boardId == null || hitToAdd == null) {
             throw new NullInputException("Attempted to add a hit with null values.");
         }
+        //Get the gameboard being updated
+        BattleshipBoard retrievedBoard = getPlayerBoard(boardId);
         //Get a list of current hits
-        List<Point> currentHits = getPlayerBoard(boardId).getBoardHits();
+        List<Point> currentHits = retrievedBoard.getBoardHits();
 
         if (currentHits.contains(hitToAdd)) {
             throw new InvalidHitException("A hit for this square already exists.");
         }
+        //Check if all ships are hit
+        List<Point> occupiedSquares = getOccupiedSquares(retrievedBoard);
+
+        boolean allSunk = true;
+        for (Point square : occupiedSquares) {
+            if (!currentHits.contains(square)) {
+                allSunk = false;
+                break;
+            }
+        }
+        //If all ships have been sunk, the game is over.
+        if (allSunk) {
+            throw new InvalidGameException("This game is already over.");
+        }
+
         //Add the hit to the table
         try{
             template.update("INSERT INTO \"Hits\" (\"boardId\", \"hitRow\", \"hitColumn\") " +
@@ -272,7 +289,7 @@ public class PostgresBattleshipDao implements BattleshipDao {
         for(Ship ships : placedShips) {
             int xPos = ships.getStartingSquare().x;
             int yPos = ships.getStartingSquare().y;
-            boolean shipHorizontal = ships.getHorizontal();
+            boolean shipHorizontal = ships.getisHorizontal();
             switch(ships.getShipType()) {
                 case "Carrier":
                     calculateOccupied(occupiedSquares, 5, xPos, yPos, shipHorizontal);
@@ -294,18 +311,45 @@ public class PostgresBattleshipDao implements BattleshipDao {
         return occupiedSquares;
     }
 
+    @Override
+    public List<BattleshipGame> getGamesByUsername(String username) throws InvalidPlayerException {
+        if (username == null) {
+            throw new InvalidPlayerException("Tried to find games using a null username.");
+        }
+
+        List<BattleshipGame> foundGames;
+        try {
+            //Get a list of all games for the user, starting with Player1 of games
+            foundGames = template.query("select \"gameId\", \"player1\", \"player2\", \"playerTurn\" from \"Games\" as games " +
+                    "inner join \"PlayerBoards\" as boards on games.\"player1\" = boards.\"boardId\" " +
+                    "inner join \"users\" as users on boards.\"playerId\" = users.\"id\" " +
+                    "where \"username\" = '" + username + "';", new GameMapper());
+            //Search for games where user is Player2 and add them to the list.
+            foundGames.addAll(template.query("select \"gameId\", \"player1\", \"player2\", \"playerTurn\" from \"Games\" as games " +
+                    "inner join \"PlayerBoards\" as boards on games.\"player2\" = boards.\"boardId\" " +
+                    "inner join \"users\" as users on boards.\"playerId\" = users.\"id\" " +
+                    "where \"username\" = '" + username + "';", new GameMapper()));
+
+            //Get the game boards of each player
+            for (BattleshipGame game : foundGames) {
+                game.setPlayer1(getPlayerBoard(game.getPlayer1().getBoardId()));
+                game.setPlayer2(getPlayerBoard(game.getPlayer2().getBoardId()));
+            }
+
+        } catch(DataAccessException | InvalidBoardException ex) {
+            throw new InvalidPlayerException("Error retrieving games for " + username, ex);
+        }
+        return foundGames;
+    }
+
 
     @Override
     public void reset() {
         //Reset all tables
-        template.update("TRUNCATE \"Games\", \"PlayerBoards\", \"Players\", \"Hits\", \"Ships\"");
+        template.update("TRUNCATE \"Games\", \"PlayerBoards\", \"Hits\", \"Ships\"");
         //Restart each id sequence
         template.update("ALTER SEQUENCE \"Games_gameId_seq\" RESTART WITH 1");
         template.update("ALTER SEQUENCE \"PlayerBoard_boardId_seq\" RESTART WITH 1");
-        template.update("ALTER SEQUENCE \"Players_playerId_seq\" RESTART WITH 1");
-
-        //Add default players
-        template.update( "INSERT INTO \"Players\" (\"name\") VALUES ('player1'), ('player2');");
 
         //Build the player boards
         template.update("INSERT INTO \"PlayerBoards\" (\"playerId\") VALUES (1);");
@@ -324,8 +368,26 @@ public class PostgresBattleshipDao implements BattleshipDao {
                 "VALUES (1, 2, 0);");
     }
 
+    @Override
+    public List<HitPoint> getBoardHits(Integer boardId) throws InvalidBoardException, InvalidShipException, NullBoardException {
+        //Retrieve the board
+        BattleshipBoard playerBoard = getPlayerBoard(boardId);
+        //Retrieve occupied squares
+        List<Point> occupiedSquares = getOccupiedSquares(playerBoard);
+        //Check if any of the board's hits are occupied
+        List<HitPoint> hitSquares = new ArrayList<>();
+        for (Point toCheck : playerBoard.getBoardHits()) {
+            if (occupiedSquares.contains(toCheck)) {
+                hitSquares.add(new HitPoint(toCheck.x, toCheck.y, "Hit"));
+            } else {
+                hitSquares.add(new HitPoint(toCheck.x, toCheck.y, "Miss"));
+            }
+        }
+       return hitSquares;
+    }
+
     private List<Integer> getAllPlayerIds() {
-        return template.query("select * from \"Players\" order by \"playerId\";", new PlayerMapper());
+        return template.query("select * from \"users\" order by \"id\";", new PlayerMapper());
     }
 
     private void calculateOccupied(List<Point> occupiedSquares, int length, int xPos, int yPos, boolean isHorizontal ){
@@ -381,7 +443,7 @@ public class PostgresBattleshipDao implements BattleshipDao {
         public Ship mapRow(ResultSet resultSet, int i) throws SQLException {
             Ship toReturn = new Ship();
             toReturn.setShipType(resultSet.getString("shipType"));
-            toReturn.setHorizontal(resultSet.getBoolean("isHorizontal"));
+            toReturn.setisHorizontal(resultSet.getBoolean("isHorizontal"));
             toReturn.setStartingSquare(new Point(resultSet.getInt("startingRow"), resultSet.getInt(("startingColumn"))));
             return toReturn;
         }
@@ -395,11 +457,19 @@ public class PostgresBattleshipDao implements BattleshipDao {
         }
     }
 
-    class PlayerMapper implements RowMapper<Integer> {
+    class BoardPlayerMapper implements RowMapper<Integer> {
 
         @Override
         public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
             return (resultSet.getInt("playerId"));
+        }
+    }
+
+    class PlayerMapper implements RowMapper<Integer> {
+
+        @Override
+        public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
+            return (resultSet.getInt("id"));
         }
     }
 

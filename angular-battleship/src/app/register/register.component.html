@@ -1,0 +1,20 @@
+<div class="contents">
+    <h3>User Registration</h3> 
+    <form
+        *ngIf="!loggedIn"
+        (ngSubmit)="onSubmit()"
+    >
+        <label>Username: </label>
+        <input type="text" name="username" [(ngModel)]="registrationData.username"/><br/>
+        <label>Email: </label>
+        <input type="email" name="email" [(ngModel)]="registrationData.email"/><br/>
+        <label>Password: </label>
+        <input type="password" name="password" [(ngModel)]="registrationData.password"/><br/>
+        <label>Confirm Password: </label>
+        <input type="password" name="confirmPass" [(ngModel)]="confirmPassword"/><br/>
+        <button>Register</button>
+    </form>
+    <div *ngIf="error">
+        {{error}}
+    </div>
+</div>

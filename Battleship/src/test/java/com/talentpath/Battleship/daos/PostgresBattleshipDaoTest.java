@@ -134,13 +134,6 @@ class PostgresBattleshipDaoTest {
     }
 
     @Test
-    void createNewPlayer() {
-        //Test that next highest playerId is generated.
-        Integer playerId = daoToTest.createNewPlayer();
-        assertEquals(3, playerId);
-    }
-
-    @Test
     void getGameById() {
 
         try {
@@ -240,7 +233,7 @@ class PostgresBattleshipDaoTest {
             Ship shipToAdd = new Ship();
 
             shipToAdd.setShipType("Battleship");
-            shipToAdd.setHorizontal(false);
+            shipToAdd.setisHorizontal(false);
             shipToAdd.setStartingSquare(new Point(3, 5));
 
             daoToTest.addShip(1, shipToAdd);
@@ -249,7 +242,7 @@ class PostgresBattleshipDaoTest {
             List<Ship> player1Ships = retrievedGame.getPlayer1().getPlacedShips();
             assertEquals(2, player1Ships.size());
             assertEquals("Battleship", player1Ships.get(0).getShipType());
-            assertFalse(player1Ships.get(0).getHorizontal());
+            assertFalse(player1Ships.get(0).getisHorizontal());
             assertEquals(3, player1Ships.get(0).getStartingSquare().x);
             assertEquals(5, player1Ships.get(0).getStartingSquare().y);
 
@@ -265,7 +258,7 @@ class PostgresBattleshipDaoTest {
             Ship shipToAdd = new Ship();
 
             shipToAdd.setShipType("Battleship");
-            shipToAdd.setHorizontal(false);
+            shipToAdd.setisHorizontal(false);
             shipToAdd.setStartingSquare(new Point(3, 5));
 
             daoToTest.addShip(null, shipToAdd);
@@ -285,7 +278,7 @@ class PostgresBattleshipDaoTest {
             Ship shipToAdd = new Ship();
 
             shipToAdd.setShipType("Battleship");
-            shipToAdd.setHorizontal(false);
+            shipToAdd.setisHorizontal(false);
             shipToAdd.setStartingSquare(new Point(3, 5));
 
             daoToTest.addShip(3, shipToAdd);
@@ -346,7 +339,7 @@ class PostgresBattleshipDaoTest {
             assertEquals(1,retrievedBoard.getBoardHits().get(1).x);
             assertEquals(1,retrievedBoard.getBoardHits().get(1).y);
 
-        } catch(InvalidHitException | NullInputException | InvalidBoardException ex) {
+        } catch(InvalidHitException | NullInputException | InvalidBoardException | InvalidShipException | NullBoardException | InvalidGameException ex) {
             fail("Unexpected exception in golden path test: " + ex.getMessage());
         }
     }
@@ -360,7 +353,7 @@ class PostgresBattleshipDaoTest {
             //Check that the hit was added
             fail("Expected error in NullPoint test");
 
-        } catch(InvalidHitException | InvalidBoardException ex) {
+        } catch(InvalidHitException | InvalidBoardException | InvalidShipException | NullBoardException | InvalidGameException ex) {
             fail("Unexpected exception in NullPoint test: " + ex.getMessage());
         } catch(NullInputException  ex) {
 
@@ -374,7 +367,7 @@ class PostgresBattleshipDaoTest {
             //Check that the hit was added
             fail("Expected error in NullPoint test");
 
-        } catch(InvalidHitException | InvalidBoardException ex) {
+        } catch(InvalidHitException | InvalidBoardException | InvalidShipException | NullBoardException | InvalidGameException ex) {
             fail("Unexpected exception in NullPoint test: " + ex.getMessage());
         } catch(NullInputException ex) {
 
@@ -390,7 +383,7 @@ class PostgresBattleshipDaoTest {
             //Check that the hit was added
             fail("Expected error in NullPoint test");
 
-        } catch(InvalidHitException | NullInputException ex) {
+        } catch(InvalidHitException | NullInputException | InvalidShipException | NullBoardException | InvalidGameException ex) {
             fail("Unexpected exception in NullPoint test: " + ex.getMessage());
         } catch(InvalidBoardException ex) {
 
@@ -405,7 +398,7 @@ class PostgresBattleshipDaoTest {
             daoToTest.addHit(1, newHit);
             fail("Expected error in ExistingPoint test");
 
-        } catch(NullInputException | InvalidBoardException ex) {
+        } catch(NullInputException | InvalidBoardException | InvalidShipException | NullBoardException | InvalidGameException ex) {
             fail("Unexpected exception in NullPoint test: " + ex.getMessage());
         } catch(InvalidHitException ex) {
 

@@ -1,0 +1,7 @@
+<div *ngIf="loggedIn">
+    <nav>
+        <span class="username">{{username}}</span>
+        <a routerLink="/dashboard">Dashboard</a>
+        <a routerLink="/login" (click)="logout()">Log Out</a>
+    </nav>
+</div>

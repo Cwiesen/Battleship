@@ -1,0 +1,27 @@
+h2 {
+    padding-top: 10px;
+}
+
+input {
+    width: 25px;
+}
+
+button {
+    margin-top: 10px;
+}
+
+.activeGame {
+    background: lightgrey;
+    position: center;
+    cursor: pointer;
+    padding:10px;
+    border: 2px;
+    margin: 5px;
+    border-style: solid;
+    width: fit-content;
+    display: inline-block;
+}
+
+.activeGame:hover {
+    background: lightblue;
+}

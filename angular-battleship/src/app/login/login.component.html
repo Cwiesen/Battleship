@@ -1,7 +1,16 @@
-<h4>username</h4>
-<input />
-<h4>password</h4>
-<input />
-<div>
-    <a routerLink="/gameboard">Log In</a>
+<div class="contents">
+    <h2 class="loginTitle">Login</h2>
+    <form
+        *ngIf="!loggedIn"
+        (ngSubmit)="onSubmit()"
+    >
+        <label>Username: </label>
+        <input type="text" name="username" [(ngModel)]="loginData.username"/><br/>
+        <label>Password: </label>
+        <input type="password" name="password" [(ngModel)]="loginData.password"/><br/>
+        <button>Log In</button>
+    </form>
+    <div>
+        <button (click)="toRegistration()" >Register</button>
+    </div>
 </div>

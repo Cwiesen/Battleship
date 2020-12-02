@@ -76,12 +76,12 @@ public class InMemBattleshipDao implements BattleshipDao {
         return new BattleshipGame(newGame);
     }
 
-    @Override
-    public Integer createNewPlayer() {
-        Integer newPlayerId = allPlayers.stream().mapToInt( g -> g).max().orElse(0) + 1;
-        allPlayers.add(newPlayerId);
-        return newPlayerId;
-    }
+//    @Override
+//    public Integer createNewPlayer() {
+//        Integer newPlayerId = allPlayers.stream().mapToInt( g -> g).max().orElse(0) + 1;
+//        allPlayers.add(newPlayerId);
+//        return newPlayerId;
+//    }
 
     @Override
     public BattleshipGame getGameById(Integer gameId) throws InvalidIdException {
@@ -120,7 +120,7 @@ public class InMemBattleshipDao implements BattleshipDao {
     @Override
     public BattleshipBoard addShip(Integer boardId, Ship toPlace) throws InvalidShipException, NullInputException, NullBoardException, InvalidPlacementException, InvalidBoardException {
         //Add a ship for the given game and player
-        if (boardId == null || toPlace == null || toPlace.getShipType() == null || toPlace.getHorizontal() == null ||
+        if (boardId == null || toPlace == null || toPlace.getShipType() == null || toPlace.getisHorizontal() == null ||
         toPlace.getStartingSquare() == null) {
             throw new NullInputException("Attempted to place a ship with null values.");
         }
@@ -161,7 +161,7 @@ public class InMemBattleshipDao implements BattleshipDao {
         List<Point> occupiedSquares = getOccupiedSquares(playerBoard);
 
         //Place the ship based on orientation
-        if (toPlace.getHorizontal()) {
+        if (toPlace.getisHorizontal()) {
             //Ships starting x position
             int shipStartingX = toPlace.getStartingSquare().x;
             //Ships cannot exceed board length
@@ -183,7 +183,8 @@ public class InMemBattleshipDao implements BattleshipDao {
             }
             //Ships cannot be placed on squares that already have a ship
             for (int i = 0; i < shipSize; i++) {
-                if (occupiedSquares.contains(new Point(toPlace.getStartingSquare().x,shipStartingY + i))) {
+                Point toCompare = new Point(toPlace.getStartingSquare().x,shipStartingY + i);
+                if (occupiedSquares.contains(toCompare)) {
                     throw new InvalidPlacementException("Tried to place ship on a space that already contains a ship.");
                 }
             }
@@ -248,7 +249,7 @@ public class InMemBattleshipDao implements BattleshipDao {
         for(Ship ships : placedShips) {
             int xPos = ships.getStartingSquare().x;
             int yPos = ships.getStartingSquare().y;
-            boolean shipHorizontal = ships.getHorizontal();
+            boolean shipHorizontal = ships.getisHorizontal();
             switch(ships.getShipType()) {
                 case "Carrier":
                     calculateOccupied(occupiedSquares, 5, xPos, yPos, shipHorizontal);
@@ -268,6 +269,11 @@ public class InMemBattleshipDao implements BattleshipDao {
             }
         }
         return occupiedSquares;
+    }
+
+    @Override
+    public List<BattleshipGame> getGamesByUsername(String username) {
+        throw new UnsupportedOperationException();
     }
 
     // Clears all current games.
@@ -290,7 +296,7 @@ public class InMemBattleshipDao implements BattleshipDao {
 
         Ship exampleShip = new Ship();
         exampleShip.setShipType("Carrier");
-        exampleShip.setHorizontal(true);
+        exampleShip.setisHorizontal(true);
         exampleShip.setStartingSquare(new Point(0, 0));
         List<Ship> shipToAdd = new ArrayList<>();
         shipToAdd.add(exampleShip);
@@ -319,6 +325,11 @@ public class InMemBattleshipDao implements BattleshipDao {
         toAdd.setPlayerTurn(0);
 
         allGames.add(toAdd);
+    }
+
+    @Override
+    public List<HitPoint> getBoardHits(Integer boardId) throws InvalidBoardException, InvalidShipException, NullBoardException {
+        throw new UnsupportedOperationException();
     }
 
     private BattleshipGame getActualGameById(Integer gameId) throws InvalidIdException {
