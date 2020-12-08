@@ -74,37 +74,6 @@ class BattleshipServiceTest {
     }
 
     @Test
-    void beginGameNewPlayers() {
-        Integer player1 = 0;
-        Integer player2 = 0;
-
-        try {
-            BattleshipGame addedGame = serviceToTest.beginGame(player1, player2);
-            assertEquals(2, addedGame.getGameId());
-            assertEquals(3, addedGame.getPlayer1().getPlayerId());
-            assertEquals(4, addedGame.getPlayer2().getPlayerId());
-            assertEquals(0, addedGame.getPlayerTurn());
-
-            //Check that the game was actually added
-            List<BattleshipGame> allGames = serviceToTest.getAllGames();
-            assertEquals(2, allGames.size());
-
-            BattleshipGame retrievedGame = dao.getGameById(2);
-            assertEquals(2, retrievedGame.getGameId());
-            assertEquals(3, retrievedGame.getPlayer1().getPlayerId());
-            assertEquals(4, retrievedGame.getPlayer2().getPlayerId());
-            assertEquals(0, retrievedGame.getPlayer1().getPlacedShips().size());
-            assertEquals(0, retrievedGame.getPlayer2().getPlacedShips().size());
-            assertEquals(0, retrievedGame.getPlayer1().getBoardHits().size());
-            assertEquals(0, retrievedGame.getPlayer2().getBoardHits().size());
-            assertEquals(0, retrievedGame.getPlayerTurn());
-
-        } catch (InvalidPlayerException | NullGameException | InvalidIdException | InvalidBoardException ex) {
-            fail("Unexpected error during new player test: " + ex.getMessage());
-        }
-    }
-
-    @Test
     void beginGameNullPlayer() {
         Integer player1 = 1;
         Integer player2 = null;

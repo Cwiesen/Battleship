@@ -352,8 +352,8 @@ public class PostgresBattleshipDao implements BattleshipDao {
         template.update("ALTER SEQUENCE \"PlayerBoard_boardId_seq\" RESTART WITH 1");
 
         //Build the player boards
-        template.update("INSERT INTO \"PlayerBoards\" (\"playerId\") VALUES (1);");
         template.update("INSERT INTO \"PlayerBoards\" (\"playerId\") VALUES (2);");
+        template.update("INSERT INTO \"PlayerBoards\" (\"playerId\") VALUES (3);");
 
         //Build player1 ships; player2 will not have default ships
         template.update("INSERT INTO \"Ships\" (\"boardId\", \"shipType\", \"isHorizontal\", \"startingRow\", \"startingColumn\") " +

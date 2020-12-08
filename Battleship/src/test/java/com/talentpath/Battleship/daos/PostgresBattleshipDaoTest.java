@@ -120,7 +120,7 @@ class PostgresBattleshipDaoTest {
     @Test
     void addGamePlayerDNE(){
         Integer player1 = 1;
-        Integer player2 = 3;
+        Integer player2 = 4;
 
         try {
             //Add the game
@@ -139,8 +139,8 @@ class PostgresBattleshipDaoTest {
         try {
             BattleshipGame retrievedGame = daoToTest.getGameById(1);
             assertEquals(1, retrievedGame.getGameId());
-            assertEquals(1, retrievedGame.getPlayer1().getPlayerId());
-            assertEquals(2, retrievedGame.getPlayer2().getPlayerId());
+            assertEquals(2, retrievedGame.getPlayer1().getPlayerId());
+            assertEquals(3, retrievedGame.getPlayer2().getPlayerId());
             assertEquals(1, retrievedGame.getPlayer1().getPlacedShips().size());
             assertEquals(0, retrievedGame.getPlayer2().getPlacedShips().size());
             assertEquals(1, retrievedGame.getPlayer1().getBoardHits().size());
@@ -180,12 +180,12 @@ class PostgresBattleshipDaoTest {
     void getPlayerBoard() {
         try {
             BattleshipBoard retrievedP1Board = daoToTest.getPlayerBoard(1);
-            assertEquals(1, retrievedP1Board.getPlayerId());
+            assertEquals(2, retrievedP1Board.getPlayerId());
             assertEquals(1, retrievedP1Board.getPlacedShips().size());
             assertEquals(1, retrievedP1Board.getBoardHits().size());
 
             BattleshipBoard retrievedP2Board = daoToTest.getPlayerBoard(2);
-            assertEquals(2, retrievedP2Board.getPlayerId());
+            assertEquals(3, retrievedP2Board.getPlayerId());
             assertEquals(0, retrievedP2Board.getPlacedShips().size());
             assertEquals(0, retrievedP2Board.getBoardHits().size());
 
